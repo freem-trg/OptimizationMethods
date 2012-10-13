@@ -12,8 +12,8 @@
 
 		public function Grid( gridWidth:int, gridHeight:int )
 		{
-			_bitmapdata = new BitmapData(gridWidth,gridHeight,true,0xffffff);
-			_bitmap = new Bitmap(_bitmapdata);
+			_bitmapdata = new BitmapData( gridWidth, gridHeight, true, 0xffffff );
+			_bitmap = new Bitmap( _bitmapdata );
 			this.addChild( _bitmap );
 			drawGrid( gridWidth, gridHeight );
 		}

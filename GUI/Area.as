@@ -2,8 +2,10 @@
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.text.TextField;
 	import GUI.Palette;
 	import GUI.Grid;
+	import GUI.Gradient;
 	
 	/*
 	Класс, который отвечает за построение поверхности, нанесение на нее линий одинакового уровня,
@@ -25,19 +27,33 @@
 		private var _eps				:Number;
 		private var _palette			:Palette;
 		private var _grid				:Grid;
+		private var _gradient			:Gradient;
+		private var _minVal_Lbl			:TextField;
+		private var _maxVal_Lbl			:TextField;
 		
 		public function Area( areaWidth:uint, areaHeight:uint, xmin:Number, xmax:Number, 
 							 ymin:Number, ymax:Number, linesCount:int, linesEps:Number, optimizationFunction:Function) {
 								 
 			_palette 	= new Palette();
 			_grid		= new Grid( areaWidth, areaHeight );
+			_gradient	= new Gradient( 20, areaHeight );
+			_minVal_Lbl = new TextField();
+			_maxVal_Lbl = new TextField();
+			_minVal_Lbl.x = areaWidth + 45;
+			_maxVal_Lbl.x = areaWidth + 45;
+			_minVal_Lbl.y = areaHeight - 20;
+			_maxVal_Lbl.y = 0;
+			_gradient.x = areaWidth + 20;
 			_areaW 		= areaWidth;
 			_areaH 		= areaHeight;
-			_bitmapdata = new BitmapData(areaWidth, areaHeight, true, 0xff0000);			
+			_bitmapdata = new BitmapData(areaWidth + 10, areaHeight + 10, true, 0xff0000);			
 			_bitmap 	= new Bitmap(_bitmapdata);
 			update( xmin, xmax, ymin, ymax, linesCount, linesEps, optimizationFunction );
 			this.addChild( _bitmap );
 			this.addChild( _grid );
+			this.addChild( _gradient );
+			this.addChild( _minVal_Lbl );
+			this.addChild( _maxVal_Lbl );
 		}
 		
 		public function update ( xmin:Number, xmax:Number, ymin:Number, 
@@ -75,6 +91,8 @@
 				_py = _ymin;
 			}			
 			_funcInterval = _maxVal - _minVal;
+			_minVal_Lbl.text = String ( _minVal );
+			_maxVal_Lbl.text = String ( _maxVal );
 			calculateLines();
 			drawArea();			
 		}
