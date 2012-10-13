@@ -3,6 +3,7 @@
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import GUI.Palette;
+	import GUI.Grid;
 	
 	/*
 	Класс, который отвечает за построение поверхности, нанесение на нее линий одинакового уровня,
@@ -23,17 +24,20 @@
 		private var _linesCount			:int;
 		private var _eps				:Number;
 		private var _palette			:Palette;
+		private var _grid				:Grid;
 		
 		public function Area( areaWidth:uint, areaHeight:uint, xmin:Number, xmax:Number, 
 							 ymin:Number, ymax:Number, linesCount:int, linesEps:Number, optimizationFunction:Function) {
 								 
 			_palette 	= new Palette();
+			_grid		= new Grid( areaWidth, areaHeight );
 			_areaW 		= areaWidth;
 			_areaH 		= areaHeight;
-			_bitmapdata = new BitmapData(areaWidth, areaHeight, false, 0xff0000);			
+			_bitmapdata = new BitmapData(areaWidth, areaHeight, true, 0xff0000);			
 			_bitmap 	= new Bitmap(_bitmapdata);
 			update( xmin, xmax, ymin, ymax, linesCount, linesEps, optimizationFunction );
-			this.addChild(_bitmap);
+			this.addChild( _bitmap );
+			this.addChild( _grid );
 		}
 		
 		public function update ( xmin:Number, xmax:Number, ymin:Number, 
@@ -83,14 +87,14 @@
 					isAdded = false;
 					for (var k:int = 0; k < _linesCount + 1; k++){
 						if ( _points [ i + j*_areaW ] - _eps < _lines[k] && _points [ i + j*_areaW ] + _eps > _lines[k] ){
-							_bitmapdata.setPixel( i, _areaH - ( j + 1),  0x000000 );
+							_bitmapdata.setPixel32( i, _areaH - ( j + 1),  0xff000000 );
 							isAdded = true;
 							break;
 						}
 					}
 					if (isAdded == false) {
 						colorIndex = uint( ( ( _points [ i + j*_areaW ] - _minVal ) / _funcInterval ) * (_palette.COLORS-1) );					
-						_bitmapdata.setPixel( i, _areaH - ( j + 1),  _palette.getColor(colorIndex) );
+						_bitmapdata.setPixel32( i, _areaH - ( j + 1),  0xff000000 + _palette.getColor(colorIndex) );
 						//colorIndex = 0xffffff  - uint (256 * (_maxVal - _points [ i + j*_areaW ])/_funcInterval)*0x010100; альтернативный способ расчета
 						//_bitmapdata.setPixel( i, _areaH - ( j + 1),  colorIndex );
 					}
