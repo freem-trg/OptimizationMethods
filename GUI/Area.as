@@ -6,6 +6,8 @@
 	import GUI.Palette;
 	import GUI.Grid;
 	import GUI.Gradient;
+	import flash.globalization.NumberFormatter;
+	import flash.display.Shape;
 	
 	/*
 	Класс, который отвечает за построение поверхности, нанесение на нее линий одинакового уровня,
@@ -71,6 +73,14 @@
 			calculateGrid();
 		}
 		
+		public function drawLine ( startX:uint, startY:uint, endX:uint, endY:uint, color:int){
+			var line: Shape = new Shape();
+			line.graphics.lineStyle( 0, color );
+			line.graphics.moveTo( startX, startY );
+			line.graphics.lineTo( endX, endY );
+			this.addChild( line );
+		}
+		
 		private function calculateGrid(){
 			_maxVal 	= Number.MIN_VALUE;
 			_minVal 	= Number.MAX_VALUE;
@@ -90,9 +100,9 @@
 				_px += _dx;
 				_py = _ymin;
 			}			
-			_funcInterval = _maxVal - _minVal;
-			_minVal_Lbl.text = String ( _minVal );
-			_maxVal_Lbl.text = String ( _maxVal );
+			_funcInterval = _maxVal - _minVal;						
+			_minVal_Lbl.text = String ( _minVal.toFixed(2) );
+			_maxVal_Lbl.text = String ( _maxVal.toFixed(2) );
 			calculateLines();
 			drawArea();			
 		}

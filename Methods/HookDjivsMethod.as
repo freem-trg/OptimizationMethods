@@ -1,29 +1,144 @@
 ﻿package Methods {
 	import flash.display.Sprite;
+	import GUI.Area;
+	import flash.geom.Point;
 	
 	public class HookDjivsMethod extends Sprite {
 		
-		private var _optimizationFunc	:Function ; // Функция, которую мы оптимизируем
-		private var _showFailures		:Boolean ;	// Параметр, отвечающий за отображение неудачных шагов
-		private var _dx					:Number ;	// Приращение по переменной х
-		private var _dy					:Number ;	// Приращение по переменной у
+		private var _optimizationFunc	: Function ; // Функция, которую мы оптимизируем
+		private var _showFailures		: Boolean ;	// Параметр, отвечающий за отображение неудачных шагов
+		private var _dx					: Number ;	// Приращение по переменной х
+		private var _dy					: Number ;	// Приращение по переменной у
+		private var _area 				: Area ;	// Отрисовка процесса поиска
+		private var _prevBasis			: Point;
+		private var _basis				: Point;
+		private var _exploringFalures	: uint;
+		private var _startDx			: Number;
+		private var _startDy			: Number;
 		
-		public function HookDjivsMethod( startX:Number, startY:Number, dx:Number, dy:Number, optimizationFunction:Function, showFailures:Boolean ){
+		public function HookDjivsMethod( startX:Number, startY:Number, dx:Number, dy:Number, optimizationFunction:Function, area:Area, showFailures:Boolean = false){
 			// Блок инициализации :
+			_prevBasis 	= new Point( startX, startY );
+			_basis		= new Point( startX, startY );
 			this._optimizationFunc 	= optimizationFunction;
 			this._showFailures 		= showFailures;
 			this._dx 				= dx;
 			this._dy				= dy;
+			this._startDx			= dx;
+			this._startDy			= dy;
+			this._area				= area;
+			_exploringFalures 		= 0;
 			//Начало поиска:
 			exploringSearch( startX, startY );
 		}
 		
 		private function exploringSearch ( searchX:Number, searchY:Number ){
+			var failuresCount:uint = 0;
+			//+dx
+			//trace( "explore" );
+			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX + _dx, searchY) ) {
+				_basis.x = searchX + _dx;
+				searchX += _dx;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//-dx
+			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX - _dx, searchY) ) {
+				_basis.x = searchX - _dx;
+				searchX -= _dx;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//+dy
+			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX , searchY + _dy) ) {
+				_basis.y = searchY + _dy;
+				searchY += _dy;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//-dy
+			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX , searchY - _dy) ) {
+				_basis.y = searchY - _dy;
+				searchY -= _dy;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			if ( failuresCount < 4 ) {
+				acceleratingSearch();
+			} else {
+				_exploringFalures += 1;
+				_dx = _dx*( _startDx / Math.exp( _exploringFalures ) );
+				_dy = _dy*( _startDy / Math.exp( _exploringFalures ) );
+				//trace( _exploringFalures );
+				if ( _exploringFalures < 3 ) {
+					exploringSearch( searchX, searchY ); // Начинаем поиск в той же точке с новыми dx и dy
+				} else {
+					trace( "Экстремум: " + searchX + " ; " + searchY );
+				}
+				
+			}
 			
 		}
 		
-		private function acceleratingSearch ( searchX:Number, searchY:Number ) {
+		private function acceleratingSearch ( ) {
+			//trace( "accelerate" );
+			var acceleratingPoint:Point = new Point();
+			var tmp:Point = new Point( _basis.x, _basis.y );
+			acceleratingPoint.x = 2 * _basis.x - _prevBasis.x;
+			acceleratingPoint.y = 2 * _basis.y - _prevBasis.y;
 			
+			var failuresCount:uint = 0;
+			//+dx
+			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x + _dx, acceleratingPoint.y) ) {
+				acceleratingPoint.x += _dx;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//-dx
+			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x - _dx, acceleratingPoint.y) ) {
+				acceleratingPoint.x -= _dx;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//+dy
+			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x , acceleratingPoint.y + _dy) ) {
+				acceleratingPoint.y += _dy;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			//-dy
+			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x , acceleratingPoint.y - _dy) ) {
+				acceleratingPoint.x -= _dy;
+				//рисование удачи
+			} else {
+				failuresCount += 1;
+				//рисование неудачи
+			}
+			if ( failuresCount < 4) {
+				if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) < _optimizationFunc( _basis.x, _basis.y ) ) {
+					_prevBasis = _basis;
+					_basis = acceleratingPoint;
+					acceleratingSearch();
+				} else {
+					exploringSearch( _basis.x, _basis.y );
+				}
+			} else {
+				exploringSearch( _basis.x, _basis.y );
+			}
 		}
 		
 		

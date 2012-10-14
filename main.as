@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import GUI.Area;
+	import Methods.HookDjivsMethod;
 	
 	public class main extends MovieClip {
 		var xmin, xmax		: Number;
@@ -37,7 +38,8 @@
 			ymax = Number( ymax_lbl.text );
 			lines = int( linesCountLbl.text );
 			linesEps = Number( linesEpsLbl.text );
-			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func );
+			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func2 );
+			var hj:HookDjivsMethod = new HookDjivsMethod( 0.5, 3, 0.15, 0.15, func2, area );
 		}
 		
 	}
