@@ -73,11 +73,16 @@
 			calculateGrid();
 		}
 		
-		public function drawLine ( startX:uint, startY:uint, endX:uint, endY:uint, color:int){
+		public function drawLine ( startX:Number, startY:Number, endX:Number, endY:Number, color:int){
 			var line: Shape = new Shape();
-			line.graphics.lineStyle( 0, color );
-			line.graphics.moveTo( startX, startY );
-			line.graphics.lineTo( endX, endY );
+			line.graphics.lineStyle( 3, color );
+			var sx, sy, ex, ey : Number;
+			sx = ( startX - _xmin ) / ( _xmax - _xmin ) * _areaW;
+			sy =  _areaH - ( startY - _ymin ) / ( _ymax - _ymin ) * _areaH;
+			ex = ( endX - _xmin ) / ( _xmax - _xmin ) * _areaW;
+			ey =  _areaH - ( endY - _ymin ) / ( _ymax - _ymin ) * _areaH;
+ 			line.graphics.moveTo( sx, sy );
+			line.graphics.lineTo( ex, ey );
 			this.addChild( line );
 		}
 		

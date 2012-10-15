@@ -6,8 +6,14 @@
 	*/
 
 	public class Palette{		
-		public const COLORS:uint = 256;
+		public const COLORS							 : uint = 256; // Тоже статик?
+		static public const ACCELERATE_FAILURE_COLOR	 : uint = 0xff0000;
+		static public const ACCELERATE_SUCCESS_COLOR	 : uint = 0x00ff00;
+		static public const EXPLORE_FAILURE_COLOR 		 : uint = 0xff9900;
+		static public const EXPLORE_SUCCESS_COLOR 		 : uint = 0x99ff00;
+		
 		private var _colors:Array;
+		
 		
 		public function Palette() {
 			_colors = new Array( COLORS );

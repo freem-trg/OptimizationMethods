@@ -39,6 +39,7 @@
 			lines = int( linesCountLbl.text );
 			linesEps = Number( linesEpsLbl.text );
 			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func2 );
+			//area.drawLine( 0.5, 6, 3, 10, 0xff0000 );
 			var hj:HookDjivsMethod = new HookDjivsMethod( 0.5, 3, 0.15, 0.15, func2, area );
 		}
 		

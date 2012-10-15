@@ -1,6 +1,7 @@
 ﻿package Methods {
 	import flash.display.Sprite;
 	import GUI.Area;
+	import GUI.Palette;
 	import flash.geom.Point;
 	
 	public class HookDjivsMethod extends Sprite {
@@ -15,9 +16,16 @@
 		private var _exploringFalures	: uint;
 		private var _startDx			: Number;
 		private var _startDy			: Number;
+		private var _isMinimize			: Boolean;
 		
-		public function HookDjivsMethod( startX:Number, startY:Number, dx:Number, dy:Number, optimizationFunction:Function, area:Area, showFailures:Boolean = false){
+		public function HookDjivsMethod( startX:Number, startY:Number, dx:Number, dy:Number, optimizationFunction:Function, 
+										area:Area, showFailures:Boolean = false, optimizationType:String = "minimize"){
 			// Блок инициализации :
+			if ( optimizationType == "minimize" ) {
+				_isMinimize = true;
+			} else {
+				_isMinimize = false;
+			}
 			_prevBasis 	= new Point( startX, startY );
 			_basis		= new Point( startX, startY );
 			this._optimizationFunc 	= optimizationFunction;
@@ -32,44 +40,62 @@
 			exploringSearch( startX, startY );
 		}
 		
+		private function compare ( x1:Number, y1:Number, x2:Number, y2:Number ) : Boolean {
+			if ( _isMinimize ){
+				if ( _optimizationFunc( x1, y1 ) > _optimizationFunc( x2, y2 ) ) return true;
+				else return false;
+			} else {
+				if ( _optimizationFunc( x1, y1 ) < _optimizationFunc( x2, y2 ) ) return true;
+				else return false;
+			}
+		}
+		
 		private function exploringSearch ( searchX:Number, searchY:Number ){
 			var failuresCount:uint = 0;
 			//+dx
 			//trace( "explore" );
-			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX + _dx, searchY) ) {
+			if ( compare( searchX, searchY, searchX + _dx, searchY ) ) {
+				_area.drawLine( searchX, searchY, searchX + _dx, searchY, Palette.EXPLORE_SUCCESS_COLOR );
 				_basis.x = searchX + _dx;
-				searchX += _dx;
+				searchX += _dx;				
 				//рисование удачи
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
+				_area.drawLine( searchX, searchY, searchX + _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//-dx
-			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX - _dx, searchY) ) {
+			if ( compare( searchX, searchY, searchX - _dx, searchY ) ) {
+				_area.drawLine( searchX, searchY, searchX - _dx, searchY, Palette.EXPLORE_SUCCESS_COLOR );
 				_basis.x = searchX - _dx;
 				searchX -= _dx;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
+				_area.drawLine( searchX, searchY, searchX - _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//+dy
-			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX , searchY + _dy) ) {
+			if ( compare( searchX, searchY, searchX , searchY + _dy ) ) {
+				_area.drawLine( searchX, searchY, searchX , searchY + _dy, Palette.EXPLORE_SUCCESS_COLOR );
 				_basis.y = searchY + _dy;
 				searchY += _dy;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
+				_area.drawLine( searchX, searchY, searchX , searchY + _dy, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//-dy
-			if ( _optimizationFunc( searchX, searchY ) > _optimizationFunc( searchX , searchY - _dy) ) {
+			if ( compare( searchX, searchY, searchX , searchY - _dy ) ) {
+				_area.drawLine( searchX, searchY, searchX , searchY - _dy, Palette.EXPLORE_SUCCESS_COLOR );
 				_basis.y = searchY - _dy;
 				searchY -= _dy;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
+				_area.drawLine( searchX, searchY, searchX , searchY - _dy, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			if ( failuresCount < 4 ) {
 				acceleratingSearch();
@@ -97,39 +123,47 @@
 			
 			var failuresCount:uint = 0;
 			//+dx
-			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x + _dx, acceleratingPoint.y) ) {
+			if ( compare( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x + _dx, acceleratingPoint.y ) ) {
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x + _dx, acceleratingPoint.y, Palette.ACCELERATE_SUCCESS_COLOR );
 				acceleratingPoint.x += _dx;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x + _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//-dx
-			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x - _dx, acceleratingPoint.y) ) {
+			if ( compare( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x - _dx, acceleratingPoint.y ) ) {
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x - _dx, acceleratingPoint.y, Palette.ACCELERATE_SUCCESS_COLOR );
 				acceleratingPoint.x -= _dx;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x - _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//+dy
-			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x , acceleratingPoint.y + _dy) ) {
+			if ( compare( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y + _dy ) ) {
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y + _dy, Palette.ACCELERATE_SUCCESS_COLOR );
 				acceleratingPoint.y += _dy;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y + _dy, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//-dy
-			if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) > _optimizationFunc(  acceleratingPoint.x , acceleratingPoint.y - _dy) ) {
+			if ( compare( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y - _dy ) ) {
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y - _dy, Palette.ACCELERATE_SUCCESS_COLOR );
 				acceleratingPoint.x -= _dy;
 				//рисование удачи
 			} else {
 				failuresCount += 1;
+				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y - _dy, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			if ( failuresCount < 4) {
-				if ( _optimizationFunc( acceleratingPoint.x, acceleratingPoint.y ) < _optimizationFunc( _basis.x, _basis.y ) ) {
+				if (  compare( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y ) ) {
 					_prevBasis = _basis;
 					_basis = acceleratingPoint;
 					acceleratingSearch();
