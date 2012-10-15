@@ -6,11 +6,12 @@
 	*/
 
 	public class Palette{		
-		public const COLORS							 : uint = 256; // Тоже статик?
+		public const COLORS							 	 : uint = 128; // Тоже статик?
 		static public const ACCELERATE_FAILURE_COLOR	 : uint = 0xff0000;
 		static public const ACCELERATE_SUCCESS_COLOR	 : uint = 0x00ff00;
-		static public const EXPLORE_FAILURE_COLOR 		 : uint = 0xff9900;
-		static public const EXPLORE_SUCCESS_COLOR 		 : uint = 0x99ff00;
+		static public const EXPLORE_FAILURE_COLOR 		 : uint = 0xffff33;
+		static public const EXPLORE_SUCCESS_COLOR 		 : uint = 0xffff00;
+		static public const ACCELERATE_LINE_COLOR		 : uint = 0xff9999;
 		
 		private var _colors:Array;
 		
@@ -18,7 +19,7 @@
 		public function Palette() {
 			_colors = new Array( COLORS );
 			for ( var i:int = 0; i < COLORS; i++ ) {
-				_colors[ COLORS - 1 - i ] = 0xffffff - 0x010100*i; 	//Заполняем градациями синего
+				_colors[ COLORS - 1 - i ] = 0xffffff - 0x010101*i; 	//Заполняем градациями синего
 			}
 		}
 		

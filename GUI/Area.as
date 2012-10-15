@@ -73,9 +73,9 @@
 			calculateGrid();
 		}
 		
-		public function drawLine ( startX:Number, startY:Number, endX:Number, endY:Number, color:int){
+		public function drawLine ( startX:Number, startY:Number, endX:Number, endY:Number, color:int, thickness:uint = 3){
 			var line: Shape = new Shape();
-			line.graphics.lineStyle( 3, color );
+			line.graphics.lineStyle( thickness, color );
 			var sx, sy, ex, ey : Number;
 			sx = ( startX - _xmin ) / ( _xmax - _xmin ) * _areaW;
 			sy =  _areaH - ( startY - _ymin ) / ( _ymax - _ymin ) * _areaH;

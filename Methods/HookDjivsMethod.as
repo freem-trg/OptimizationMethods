@@ -62,7 +62,7 @@
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
-				_area.drawLine( searchX, searchY, searchX + _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( searchX, searchY, searchX + _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//-dx
 			if ( compare( searchX, searchY, searchX - _dx, searchY ) ) {
@@ -73,7 +73,7 @@
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
-				_area.drawLine( searchX, searchY, searchX - _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( searchX, searchY, searchX - _dx, searchY, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//+dy
 			if ( compare( searchX, searchY, searchX , searchY + _dy ) ) {
@@ -84,7 +84,7 @@
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
-				_area.drawLine( searchX, searchY, searchX , searchY + _dy, Palette.EXPLORE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( searchX, searchY, searchX , searchY + _dy, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			//-dy
 			if ( compare( searchX, searchY, searchX , searchY - _dy ) ) {
@@ -95,7 +95,7 @@
 			} else {
 				failuresCount += 1;
 				//рисование неудачи
-				_area.drawLine( searchX, searchY, searchX , searchY - _dy, Palette.EXPLORE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( searchX, searchY, searchX , searchY - _dy, Palette.EXPLORE_FAILURE_COLOR );
 			}
 			if ( failuresCount < 4 ) {
 				acceleratingSearch();
@@ -106,6 +106,7 @@
 				//trace( _exploringFalures );
 				if ( _exploringFalures < 3 ) {
 					exploringSearch( searchX, searchY ); // Начинаем поиск в той же точке с новыми dx и dy
+					//_prevBasis = _basis;
 				} else {
 					trace( "Экстремум: " + searchX + " ; " + searchY );
 				}
@@ -129,7 +130,7 @@
 				//рисование удачи
 			} else {
 				failuresCount += 1;
-				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x + _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x + _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//-dx
@@ -139,7 +140,7 @@
 				//рисование удачи
 			} else {
 				failuresCount += 1;
-				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x - _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x - _dx, acceleratingPoint.y, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//+dy
@@ -149,7 +150,7 @@
 				//рисование удачи
 			} else {
 				failuresCount += 1;
-				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y + _dy, Palette.ACCELERATE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y + _dy, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			//-dy
@@ -159,18 +160,21 @@
 				//рисование удачи
 			} else {
 				failuresCount += 1;
-				_area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y - _dy, Palette.ACCELERATE_FAILURE_COLOR );
+				if ( _showFailures ) _area.drawLine( acceleratingPoint.x, acceleratingPoint.y, acceleratingPoint.x, acceleratingPoint.y - _dy, Palette.ACCELERATE_FAILURE_COLOR );
 				//рисование неудачи
 			}
 			if ( failuresCount < 4) {
 				if (  compare( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y ) ) {
-					_prevBasis = _basis;
+					_area.drawLine( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y, Palette.ACCELERATE_LINE_COLOR, 2 );					_prevBasis = _basis;
 					_basis = acceleratingPoint;
 					acceleratingSearch();
+					
 				} else {
+					_prevBasis = _basis;
 					exploringSearch( _basis.x, _basis.y );
 				}
 			} else {
+				//_prevBasis = _basis;
 				exploringSearch( _basis.x, _basis.y );
 			}
 		}
