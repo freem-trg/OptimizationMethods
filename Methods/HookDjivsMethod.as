@@ -104,7 +104,7 @@
 				_dx = _dx*( _startDx / Math.exp( _exploringFalures ) );
 				_dy = _dy*( _startDy / Math.exp( _exploringFalures ) );
 				//trace( _exploringFalures );
-				if ( _exploringFalures < 3 ) {
+				if ( _exploringFalures < 3) {
 					exploringSearch( searchX, searchY ); // Начинаем поиск в той же точке с новыми dx и dy
 					//_prevBasis = _basis;
 				} else {

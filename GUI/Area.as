@@ -32,10 +32,12 @@
 		private var _gradient			:Gradient;
 		private var _minVal_Lbl			:TextField;
 		private var _maxVal_Lbl			:TextField;
+		private var _methodLines		:Array;
 		
 		public function Area( areaWidth:uint, areaHeight:uint, xmin:Number, xmax:Number, 
 							 ymin:Number, ymax:Number, linesCount:int, linesEps:Number, optimizationFunction:Function) {
 								 
+			_methodLines = new Array();
 			_palette 	= new Palette();
 			_grid		= new Grid( areaWidth, areaHeight );
 			_gradient	= new Gradient( 20, areaHeight );
@@ -83,7 +85,14 @@
 			ey =  _areaH - ( endY - _ymin ) / ( _ymax - _ymin ) * _areaH;
  			line.graphics.moveTo( sx, sy );
 			line.graphics.lineTo( ex, ey );
+			_methodLines.push( line );
 			this.addChild( line );
+		}
+		
+		public function removeMethodLines () {
+			while ( _methodLines.length > 0 ) {
+				this.removeChild( _methodLines.pop() );
+			}
 		}
 		
 		private function calculateGrid(){

@@ -2,8 +2,12 @@
 	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	import flash.events.Event;
 	import GUI.Area;
 	import Methods.HookDjivsMethod;
+	import Other.CustomEvents;
+	import flash.ui.MouseCursor;
+
 	
 	public class main extends MovieClip {
 		var xmin, xmax		: Number;
@@ -21,6 +25,8 @@
 			area.x = startx;
 			area.y = starty;
 			this.addChild(area);			
+			
+			clearMethodsLinesBtn.addEventListener ( MouseEvent.CLICK, clearMethodsLines );
 		}
 		
 		private function func(fx:Number, fy:Number):Number{
@@ -38,9 +44,28 @@
 			ymax = Number( ymax_lbl.text );
 			lines = int( linesCountLbl.text );
 			linesEps = Number( linesEpsLbl.text );
-			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func2 );
+			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func );
 			//area.drawLine( 0.5, 6, 3, 10, 0xff0000 );
-			var hj:HookDjivsMethod = new HookDjivsMethod( 0.5, 3, 0.15, 0.15, func2, area );
+			
+			//area.removeMethodLines();
+			//var hj2:HookDjivsMethod = new HookDjivsMethod( 0, 0, 0.3, 0.3, func2, area, false, "maximize" );
+			hj_properties.addEventListener ( CustomEvents.CALCULATE, create_HJmethod );
+		}
+		
+		private function create_HJmethod ( CustomEvents = null) {
+			var sx, sy, sdx, sdy : Number;
+			var isMax 			 : String;
+			sx 		= hj_properties.startX;
+			sy 		= hj_properties.startY;
+			sdx 	= hj_properties.startDx;
+			sdy 	= hj_properties.startDy;
+			isMax 	= hj_properties.isMax;
+			//trace ( sx + " " + sy + " " + sdx + " " + sdy + " " + isMax );
+			var hj:HookDjivsMethod = new HookDjivsMethod( sx, sy, sdx, sdy, func, area, false, isMax);
+		}
+		
+		private function clearMethodsLines ( me:MouseEvent = null) {
+			area.removeMethodLines();
 		}
 		
 	}

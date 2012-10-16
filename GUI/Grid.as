@@ -24,14 +24,14 @@
 			{
 				for (var line:int = 0; line < LINES; line ++)
 				{
-					_bitmapdata.setPixel32( tx, uint(gridHeight/(LINES-1)*line), 0xff000000 );
+					_bitmapdata.setPixel32( tx, uint(gridHeight/(LINES-1)*line), 0xff222222 );
 				}
 			}
 			for (var ty:int = 0; ty < gridHeight; ty ++)
 			{
 				for ( line = 0; line < LINES; line ++)
 				{
-					_bitmapdata.setPixel32( uint( gridWidth/(LINES-1)*line ), ty , 0xff000000 );
+					_bitmapdata.setPixel32( uint( gridWidth/(LINES-1)*line ), ty , 0xff222222 );
 				}
 			}
 		}
