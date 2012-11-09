@@ -5,6 +5,7 @@
 	import flash.events.Event;
 	import GUI.Area;
 	import Methods.HookDjivsMethod;
+	import Methods.NelderMidMethod;
 	import Other.CustomEvents;
 	import flash.ui.MouseCursor;
 
@@ -29,12 +30,22 @@
 			clearMethodsLinesBtn.addEventListener ( MouseEvent.CLICK, clearMethodsLines );
 		}
 		
+		private function func4( fx:Number, fy:Number ):Number{
+			var res:Number = 4*( fx - 5)*( fx - 5 ) + ( fy - 6 )*( fy - 6 );
+			return res;
+		}
+		
 		private function func(fx:Number, fy:Number):Number{
-			return 3*( fx*fx )*fy + fy*fy*fy - 12*fx - 15*fy + 1;
+			var res:Number = 3*( fx*fx )*fy + fy*fy*fy - 12*fx - 15*fy + 1;
+			return res;
 		}
 		
 		private function func2(fx:Number, fy:Number):Number{
 			return 3*( fx*fx ) + fy*fy - 12*fx - 15*fy + 1;
+		}
+		
+		private function func3( fx:Number, fy:Number) {
+			return (1-fx)*(1-fx) + 10*(fy-fx*fx)*(fy-fx*fx);
 		}
 		
 		private function drawArea( me:MouseEvent ) { 			
@@ -50,6 +61,8 @@
 			//area.removeMethodLines();
 			//var hj2:HookDjivsMethod = new HookDjivsMethod( 0, 0, 0.3, 0.3, func2, area, false, "maximize" );
 			hj_properties.addEventListener ( CustomEvents.CALCULATE, create_HJmethod );
+			var nm:NelderMidMethod = new NelderMidMethod( [0, 0, -1], [-3, -2, -2], func, area, 0.000001, false, "maximize");
+			nm.find();
 		}
 		
 		private function create_HJmethod ( CustomEvents = null) {
