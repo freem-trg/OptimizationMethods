@@ -6,7 +6,8 @@
 	import GUI.Area;
 	import Methods.HookDjivsMethod;
 	import Methods.NelderMidMethod;
-	import Methods.Rosenbrock;
+	import Methods.RosenbrockMethod;
+	import Methods.PauelsMethod;
 	import Other.CustomEvents;
 	import flash.ui.MouseCursor;
 
@@ -28,7 +29,12 @@
 			area.y = starty;
 			this.addChild(area);						
 			clearMethodsLinesBtn.addEventListener ( MouseEvent.CLICK, clearMethodsLines );
-			
+
+		}
+		
+		private function func6( fx:Number, fy:Number ) : Number {
+			var res:Number = 100*(fy - fx*fx)*(fy - fx*fx) + ( 1 - fx )*( 1 - fx );
+			return res;
 		}
 		
 		private function func4( fx:Number, fy:Number ):Number{
@@ -68,8 +74,10 @@
 			hj_properties.addEventListener ( CustomEvents.CALCULATE, create_HJmethod );
 			//var nm:NelderMidMethod = new NelderMidMethod( [-1, 0, 1], [2.2, 3.5, 2.5], func, area );
 			//nm.find();
-			//var rose:Rosenbrock = new Rosenbrock ( 0.1, 2, 0.2, 0.2, func, area );
+			//var rose:RosenbrockMethod = new RosenbrockMethod ( 0.1, 2, 0.2, 0.2, func, area );
 			//rose.find();
+			var pm:PauelsMethod = new PauelsMethod( 0, 0, 0.1, 0.1, func, area );
+			pm.find();
 			
 			
 		}

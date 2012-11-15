@@ -4,7 +4,7 @@
 	import GUI.Area;
 	import GUI.Palette;
 
-	public class Rosenbrock extends Sprite {
+	public class RosenbrockMethod extends Sprite {
 		private const ALFA = 3;
 		private const BETTA = -0.5;
 
@@ -28,7 +28,7 @@
 		private var _successWas			: Boolean;// Параметр, показывающий были ли 2 удачных шага подряд
 		private var _iterations 		: uint = 0;// Счетчик количества итераций
 
-		public function Rosenbrock( startX:Number, startY:Number, l1:Number, l2:Number, optimizationFunction:Function, 
+		public function RosenbrockMethod( startX:Number, startY:Number, l1:Number, l2:Number, optimizationFunction:Function, 
 		area:Area, eps:Number = 0.000001, showFailures:Boolean = false, optimizationType:String = "minimize") {
 			// Блок инициализации :
 			if ( optimizationType == "minimize" ) {
@@ -98,7 +98,7 @@
 			}
 
 			if (Math.abs(_l1) < Math.abs(_eps) && _l2 < _eps) {
-				trace( _currentPoint );
+				trace( "Finish : " + _currentPoint);
 				_area.drawCircle( _currentPoint.x, _currentPoint.y, 2, Palette.POLIGON_END );
 				return;
 			}
