@@ -6,6 +6,7 @@
 	import GUI.Area;
 	import Methods.HookDjivsMethod;
 	import Methods.NelderMidMethod;
+	import Methods.Rosenbrock;
 	import Other.CustomEvents;
 	import flash.ui.MouseCursor;
 
@@ -25,9 +26,9 @@
 			area = new Area( 512, 512, 0, 0, 0, 0, 0, 0, func );
 			area.x = startx;
 			area.y = starty;
-			this.addChild(area);			
-			
+			this.addChild(area);						
 			clearMethodsLinesBtn.addEventListener ( MouseEvent.CLICK, clearMethodsLines );
+			
 		}
 		
 		private function func4( fx:Number, fy:Number ):Number{
@@ -38,6 +39,10 @@
 		private function func(fx:Number, fy:Number):Number{
 			var res:Number = 3*( fx*fx )*fy + fy*fy*fy - 12*fx - 15*fy + 1;
 			return res;
+		}
+		
+		private function func5(fx:Number, fy:Number):Number{
+			return fx*fx - fx*fy + fy*fy - 2 * fx + fy;
 		}
 		
 		private function func2(fx:Number, fy:Number):Number{
@@ -61,8 +66,12 @@
 			//area.removeMethodLines();
 			//var hj2:HookDjivsMethod = new HookDjivsMethod( 0, 0, 0.3, 0.3, func2, area, false, "maximize" );
 			hj_properties.addEventListener ( CustomEvents.CALCULATE, create_HJmethod );
-			var nm:NelderMidMethod = new NelderMidMethod( [0, 0, -1], [-3, -2, -2], func, area, 0.000001, false, "maximize");
-			nm.find();
+			//var nm:NelderMidMethod = new NelderMidMethod( [-1, 0, 1], [2.2, 3.5, 2.5], func, area );
+			//nm.find();
+			//var rose:Rosenbrock = new Rosenbrock ( 0.1, 2, 0.2, 0.2, func, area );
+			//rose.find();
+			
+			
 		}
 		
 		private function create_HJmethod ( CustomEvents = null) {

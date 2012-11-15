@@ -89,6 +89,19 @@
 			this.addChild( line );
 		}
 		
+		public function drawCircle ( startX:Number, startY:Number, radius:Number, color:int ){
+			var circle: Shape = new Shape();
+			circle.graphics.beginFill( color, 1 );
+			var sx, sy : Number;
+			sx = ( startX - _xmin ) / ( _xmax - _xmin ) * _areaW;
+			sy =  _areaH - ( startY - _ymin ) / ( _ymax - _ymin ) * _areaH;
+			circle.graphics.drawCircle( sx, sy, radius );	
+			_methodLines.push( circle );
+			this.addChild( circle );
+		}
+		
+		
+		
 		public function removeMethodLines () {
 			while ( _methodLines.length > 0 ) {
 				this.removeChild( _methodLines.pop() );

@@ -12,6 +12,8 @@
 		static public const EXPLORE_FAILURE_COLOR 		 : uint = 0xffff33;
 		static public const EXPLORE_SUCCESS_COLOR 		 : uint = 0xffff00;
 		static public const ACCELERATE_LINE_COLOR		 : uint = 0xff9999;
+		static public const POLIGON_COLOR				 : uint = 0x00ff00;
+		static public const POLIGON_END					 : uint = 0xff0000;
 		
 		private var _colors:Array;
 		

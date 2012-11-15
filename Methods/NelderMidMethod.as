@@ -2,6 +2,7 @@
 	import flash.display.Sprite;
 	import GUI.Area;
 	import flash.geom.Point;
+	import GUI.Palette;
 	
 	public class NelderMidMethod extends Sprite {
 		private const _alfa 	= 1;
@@ -154,9 +155,15 @@
 					var f2:Number = _optimizationFunc(_centr.x, _centr.y);
 					eps += Math.pow( f1 - f2, 2 );
 				}
+				for ( i = 0; i < _coordinates.x.length-1; i++ ){
+					_area.drawLine( _coordinates.x[i], _coordinates.y[i], _coordinates.x[i+1], _coordinates.y[i+1], Palette.POLIGON_COLOR, 1 );
+				}
+				_area.drawLine( _coordinates.x[0], _coordinates.y[0], _coordinates.x[_coordinates.x.length - 1], _coordinates.y[_coordinates.x.length - 1], Palette.POLIGON_COLOR, 1 );
 				eps = Math.pow( eps / 3, 0.5 );
 				iter += 1;				
 			}
+			//Рисуем точку экстремума:
+			_area.drawCircle( _coordinates.x[0] , _coordinates.y[0], 2, Palette.POLIGON_END );
 			trace ( "iteration: " + iter + " " + _coordinates.x + " " + _coordinates.y + " err: " + eps );
 		}
 		
