@@ -8,6 +8,7 @@
 	import Methods.NelderMidMethod;
 	import Methods.RosenbrockMethod;
 	import Methods.PauelsMethod;
+	import Methods.GradientDescent;
 	import Other.CustomEvents;
 	import flash.ui.MouseCursor;
 
@@ -66,7 +67,7 @@
 			ymax = Number( ymax_lbl.text );
 			lines = int( linesCountLbl.text );
 			linesEps = Number( linesEpsLbl.text );
-			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func );
+			area.update( xmin, xmax, ymin, ymax, lines, linesEps, func2 );
 			//area.drawLine( 0.5, 6, 3, 10, 0xff0000 );
 			
 			//area.removeMethodLines();
@@ -76,8 +77,8 @@
 			//nm.find();
 			//var rose:RosenbrockMethod = new RosenbrockMethod ( 0.1, 2, 0.2, 0.2, func, area );
 			//rose.find();
-			var pm:PauelsMethod = new PauelsMethod( 0, 0, 0.1, 0.1, func, area );
-			pm.find();
+			//var pm:PauelsMethod = new PauelsMethod( 0, 0, 0.1, 0.1, func, area );
+			//pm.find();
 			
 			
 		}
@@ -96,6 +97,8 @@
 		
 		private function clearMethodsLines ( me:MouseEvent = null) {
 			area.removeMethodLines();
+			var gd:GradientDescent = new GradientDescent( 0, 0, 1, func2, area, false, "minimize" );
+			
 		}
 		
 	}
