@@ -6,15 +6,14 @@
 	import flash.events.EventDispatcher;
 	import flash.events.Event;
 	import Other.CustomEvents;
-	import main;
 
-	public class HJ_panel extends MovieClip
+	public class Pauels_panel extends MovieClip
 	{
 
 		private var _isMinimized:Boolean;
 		private var _isMax		:Boolean;
 
-		public function HJ_panel()
+		public function Pauels_panel()
 		{
 			_isMinimized = true;			
 			show_btn.addEventListener( MouseEvent.CLICK, showPanel );
@@ -50,12 +49,16 @@
 			return Number ( params_panel.starty_lbl.text );
 		}
 		
-		public function get startDx():Number{
-			return Number ( params_panel.dx_lbl.text );
+		public function get startL1():Number{
+			return Number ( params_panel.l1_lbl.text );
 		}
 		
-		public function get startDy():Number{
-			return Number ( params_panel.dy_lbl.text );
+		public function get startL2():Number{
+			return Number ( params_panel.l2_lbl.text );
+		}
+		
+		public function get startEps():Number{
+			return Number ( params_panel.eps_lbl.text );
 		}
 		
 		private function maxToggleClk ( me:MouseEvent = null ){
@@ -74,23 +77,15 @@
 				params_panel.max_toggle.addEventListener( MouseEvent.CLICK, maxToggleClk );
 				params_panel.min_toggle.addEventListener( MouseEvent.CLICK, minToggleClk );
 				params_panel.calculate_btn.addEventListener( MouseEvent.CLICK, calculateBtnClk );
-				//сдвинуть все остальные панели вниз
-				main(this.parent).rosenbrock_properties.y += params_panel.height;
-				main(this.parent).pauels_properties.y += params_panel.height;
 				main(this.parent).nelder_properties.y += params_panel.height;
-				
 			}
 			
 			else {				
-				//сдвинуть все остальные панели вверх
-				main(this.parent).rosenbrock_properties.y -= params_panel.height;
-				main(this.parent).pauels_properties.y -= params_panel.height;
 				main(this.parent).nelder_properties.y -= params_panel.height;
 				params_panel.max_toggle.removeEventListener( MouseEvent.CLICK, maxToggleClk );
 				params_panel.min_toggle.removeEventListener( MouseEvent.CLICK, minToggleClk );
 				params_panel.calculate_btn.removeEventListener( MouseEvent.CLICK, calculateBtnClk );
 				params_panel.gotoAndStop( 1 );
-				
 			}
 			_isMinimized = ! _isMinimized;
 			

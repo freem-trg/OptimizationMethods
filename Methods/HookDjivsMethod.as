@@ -3,6 +3,7 @@
 	import GUI.Area;
 	import GUI.Palette;
 	import flash.geom.Point;
+	import main;
 	
 	public class HookDjivsMethod extends Sprite {
 		
@@ -17,9 +18,10 @@
 		private var _startDx			: Number;
 		private var _startDy			: Number;
 		private var _isMinimize			: Boolean;
+		private var _prnt				: main;
 		
 		public function HookDjivsMethod( startX:Number, startY:Number, dx:Number, dy:Number, optimizationFunction:Function, 
-										area:Area, showFailures:Boolean = false, optimizationType:String = "minimize"){
+										area:Area, prnt:main, showFailures:Boolean = false, optimizationType:String = "minimize"  ){
 			// Блок инициализации :
 			if ( optimizationType == "minimize" ) {
 				_isMinimize = true;
@@ -35,6 +37,7 @@
 			this._startDx			= dx;
 			this._startDy			= dy;
 			this._area				= area;
+			this._prnt				= prnt;
 			_exploringFalures 		= 0;
 			//Начало поиска:
 			exploringSearch( startX, startY );
@@ -97,7 +100,8 @@
 				//рисование неудачи
 				if ( _showFailures ) _area.drawLine( searchX, searchY, searchX , searchY - _dy, Palette.EXPLORE_FAILURE_COLOR );
 			}
-			if ( failuresCount < 4 ) {
+			if ( failuresCount < 4 ) {							
+				_prnt.addTrace(  _basis.x.toFixed(3) + " " + _basis.y.toFixed(3) );
 				acceleratingSearch();
 			} else {
 				_exploringFalures += 1;
@@ -107,7 +111,7 @@
 				if ( _exploringFalures < 3) {
 					exploringSearch( searchX, searchY ); // Начинаем поиск в той же точке с новыми dx и dy
 					//_prevBasis = _basis;
-				} else {
+				} else {					
 					trace( "Экстремум: " + searchX + " ; " + searchY );
 				}
 				
@@ -165,7 +169,8 @@
 			}
 			if ( failuresCount < 4) {
 				if (  compare( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y ) ) {
-					_area.drawLine( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y, Palette.ACCELERATE_LINE_COLOR, 2 );					_prevBasis = _basis;
+					_area.drawLine( _basis.x, _basis.y, acceleratingPoint.x, acceleratingPoint.y, Palette.ACCELERATE_LINE_COLOR, 2 );					
+					_prevBasis = _basis;
 					_basis = acceleratingPoint;
 					acceleratingSearch();
 					

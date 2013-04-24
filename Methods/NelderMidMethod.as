@@ -3,6 +3,7 @@
 	import GUI.Area;
 	import flash.geom.Point;
 	import GUI.Palette;
+	import main;
 	
 	public class NelderMidMethod extends Sprite {
 		private const _alfa 	= 1;
@@ -15,9 +16,10 @@
 		private var _area 				: Area ;	// Отрисовка процесса поиска
 		private var _isMinimize			: Boolean; 
 		private var _coordinates		: Object;
+		private var _prnt				: main;
 		
 		public function NelderMidMethod(startX:Array, startY:Array, optimizationFunction:Function, 
-										area:Area, eps:Number = 0.000001, showFailures:Boolean = false, optimizationType:String = "minimize"){
+										area:Area, prnt:main, eps:Number = 0.000001, showFailures:Boolean = false, optimizationType:String = "minimize"){
 			// Блок инициализации :
 			if ( optimizationType == "minimize" ) {
 				_isMinimize = true;
@@ -31,7 +33,9 @@
 			_area 			= area;
 			_showFailures 	= showFailures;
 			_optimizationFunc = optimizationFunction;
-			
+			_prnt = prnt;
+			//вывод сообщения
+			//_prnt.addTrace( );
 		}
 		
 		public function find(){
